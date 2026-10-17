@@ -1,0 +1,8 @@
+{
+  "note": "Copy to <RUN_DIR>/control.json. Re-read every 1 s by run-sender.mjs. target_tx_s is capped at 300 in code.",
+  "step": "A1",
+  "target_tx_s": 300,
+  "fee_sompi_per_gram": 400,
+  "start_utc": "2026-01-01T14:00:00Z",
+  "hold": true
+}

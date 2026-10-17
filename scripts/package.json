@@ -1,0 +1,8 @@
+{
+  "name": "tn10-run-kit-scripts",
+  "private": true,
+  "description": "Scripts from our own TN10 load test, shared as-is. Testnet-10 only.",
+  "dependencies": {
+    "websocket": "^1.0.35"
+  }
+}

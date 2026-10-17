@@ -1,0 +1,10 @@
+# Never commit run state or per-transaction logs
+config.env
+*.env
+!config.example.env
+**/tx.jsonl
+**/*tips*.json
+**/STOP
+**/sender.lock
+node_modules/
+logs/
