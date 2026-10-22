@@ -10,8 +10,14 @@ param([int]$LogLines = 15)
 "HOST: $env:COMPUTERNAME  UTC: $((Get-Date).ToUniversalTime().ToString('u'))"
 
 $Root    = 'C:\kaspa'
-$LogFile = Join-Path $Root 'logs\rusty-kaspa.log'
-$ErrFile = Join-Path $Root 'logs\rusty-kaspa_err.log'
+$DataDir = Join-Path $Root 'data-tn10'
+$LogDir  = Join-Path $Root 'logs'
+# Prefer the paths the running kaspad was actually started with (--appdir / --logdir).
+$cmd = (Get-CimInstance Win32_Process -Filter "Name='kaspad.exe'" -ErrorAction SilentlyContinue | Select-Object -First 1).CommandLine
+if ($cmd -match '--appdir[= ]"?([^" ]+)') { $DataDir = $Matches[1] }
+if ($cmd -match '--logdir[= ]"?([^" ]+)') { $LogDir  = $Matches[1] }
+$LogFile = Join-Path $LogDir 'rusty-kaspa.log'
+$ErrFile = Join-Path $LogDir 'rusty-kaspa_err.log'
 $WsUrl   = 'ws://127.0.0.1:18210'
 
 function Invoke-KaspaRpc([string]$Method) {
@@ -71,8 +77,8 @@ if ($proc) {
 $disk = Get-PSDrive -Name C
 $freeGB = $disk.Free / 1GB
 $dataGB = 0
-if (Test-Path "$Root\data-tn10") {
-    $dataGB = (Get-ChildItem "$Root\data-tn10" -Recurse -File -ErrorAction SilentlyContinue | Measure-Object Length -Sum).Sum / 1GB
+if (Test-Path $DataDir) {
+    $dataGB = (Get-ChildItem $DataDir -Recurse -File -ErrorAction SilentlyContinue | Measure-Object Length -Sum).Sum / 1GB
 }
 Write-Host ("Disk C: {0:N0} GB free, node data {1:N1} GB" -f $freeGB, $dataGB)
 if ($freeGB -lt 50) { Write-Warning ("Less than 50 GB free on C: ({0:N0} GB). Free up space before the node fills the disk." -f $freeGB) }
