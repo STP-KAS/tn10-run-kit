@@ -6,6 +6,9 @@
 [CmdletBinding()]
 param([int]$LogLines = 15)
 
+# First line of every report: which machine, and when (UTC).
+"HOST: $env:COMPUTERNAME  UTC: $((Get-Date).ToUniversalTime().ToString('u'))"
+
 $Root    = 'C:\kaspa'
 $LogFile = Join-Path $Root 'logs\rusty-kaspa.log'
 $ErrFile = Join-Path $Root 'logs\rusty-kaspa_err.log'
