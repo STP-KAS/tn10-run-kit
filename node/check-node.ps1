@@ -66,6 +66,7 @@ if ($proc) {
         Write-Host ("Network {0}, kaspad {1}, utxoindex {2}" -f $si.networkId, $si.serverVersion, $si.hasUtxoIndex)
         Write-Host ("Synced: {0}" -f $si.isSynced) -ForegroundColor $color
         Write-Host ("Headers {0}, blocks {1}, DAA score {2}, peers {3}" -f $dag.headerCount, $dag.blockCount, $si.virtualDaaScore, $peers)
+        Write-Host ("Sink (tip) {0}  at UTC {1}" -f $dag.sink, (Get-Date).ToUniversalTime().ToString('HH:mm:ss'))
         $tipAge = (Get-Date).ToUniversalTime() - [DateTimeOffset]::FromUnixTimeMilliseconds([int64]$dag.pastMedianTime).UtcDateTime
         Write-Host ("Past median time is {0:N0} min behind now (a few seconds when synced)" -f $tipAge.TotalMinutes)
     } catch {
